@@ -250,51 +250,99 @@ scene('jeu', () => {
   // avec tous les types de briques
   // grâce à l'identifiant "brique"
   ball.onCollide('standard', (b) => {
-    play('reussite');
+    // Destroy and bounce
     b.destroy();
+    ball.velocite = dir(ball.pos.angle(b.pos));
+    
+    play('reussite');
+
     // augmenter le score
     score++;
-    ball.velocite = dir(ball.pos.angle(b.pos));
   });
 
   // avec les briques spéciales
   // grâce à l'identifiant "special"
   ball.onCollide('fall', (b) => {
+    // Bounce only
+    ball.velocite = dir(ball.pos.angle(b.pos));
+
+    play('reussite');
+
     b.use(body());
     b.onCollide('paddle', (p) => {
       shake(30);
       play('echec');
       vies--;
     });
-    ball.velocite = dir(ball.pos.angle(b.pos));
+
+    // augmenter le score
+    score++;
   });
 
   ball.onCollide('bomb', (b) => {
-    
+    // Destroy and bounce
+    b.destroy();
+    ball.velocite = dir(ball.pos.angle(b.pos));
+
+    play('reussite');
+
+    ball.use(scale(3));
+    wait(0.02, () => {
+      ball.use(scale(1));
+    });
+
+    // augmenter le score
+    score++;
   });
 
   ball.onCollide('slowdown', (b) => {
+    // Destroy and bounce
+    b.destroy();
+    ball.velocite = dir(ball.pos.angle(b.pos));
+    
+    play('reussite');
+
     vitesse = 400;
     wait(5, () => {
       vitesse = DEFAULT_SPEED;
     });
+
+    // augmenter le score
+    score++;
   });
 
   ball.onCollide('accelerate', (b) => {
+    // Destroy and bounce
+    b.destroy();
+    ball.velocite = dir(ball.pos.angle(b.pos));
+    
+    play('reussite');
+
     vitesse = 800;
     wait(5, () => {
       vitesse = DEFAULT_SPEED;
     });
+
+    // augmenter le score
+    score++;
   });
 
   ball.onCollide('quake', (b) => {
+    // Destroy and bounce
+    b.destroy();
+    ball.velocite = dir(ball.pos.angle(b.pos));
+    
     play('quake');
+    
     shake(300);
     every('brique', (b) => {
       b.pos.x = b.pos.x + rand(-50, 50);
       b.pos.y = b.pos.y + rand(-50, 50);
     });
     ball.velocite = dir(ball.pos.angle(b.pos));
+
+    // augmenter le score
+    score++;
   });
 });
 
@@ -350,22 +398,9 @@ function mutateSpecials() {
     } else if (b.is('standard')) {
       b.unuse('standard');
     }
-    if (chance(0.25)) {
+    if (chance(1)) {
       const type = choose([
-        'slowdown',
-        'slowdown',
-        'slowdown',
-        'accelerate',
-        'accelerate',
-        'accelerate',
         'bomb',
-        'doppelganger',
-        'doppelganger',
-        'doppelganger',
-        'fall',
-        'quake',
-        'pinball',
-        'radionucleide',
       ]);
 
       b.use(type);
@@ -384,6 +419,9 @@ function mutateSpecials() {
       } else if (b.is('pinball')) {
         b.use(color(158, 158, 158));
       } else if (b.is('radionucleide')) {
+        loop(0.1, () => {
+          b.use(rotate(rand(5)));
+        });
         b.use(color(77, 255, 77));
       }
     } else {

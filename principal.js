@@ -43,6 +43,7 @@ loadSound('echec', 'audio/echec.wav');
 loadSound('quake', 'audio/EXPLOSION_Distorted_03_Long_stereo.wav');
 loadSound('riser', 'audio/PM_FSSF2_TONAL_ENERGY_RISERS_4.wav');
 loadSound('thunder', 'audio/THUD_Bright_01_mono.wav');
+loadSound('bomb', 'audio/FIREWORKS_Rocket_Explode_Distant_mono.wav');
 
 // déclaration d'une scène
 // les scènes découpent le jeu
@@ -284,7 +285,7 @@ scene('jeu', () => {
     b.destroy();
     ball.velocite = dir(ball.pos.angle(b.pos));
 
-    play('reussite');
+    play('bomb');
 
     ball.use(scale(3));
     wait(0.02, () => {
@@ -333,7 +334,7 @@ scene('jeu', () => {
     ball.velocite = dir(ball.pos.angle(b.pos));
     
     play('quake');
-    
+
     shake(300);
     every('brique', (b) => {
       b.pos.x = b.pos.x + rand(-50, 50);

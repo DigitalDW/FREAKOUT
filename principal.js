@@ -44,6 +44,7 @@ loadSound('quake', 'audio/EXPLOSION_Distorted_03_Long_stereo.wav');
 loadSound('riser', 'audio/PM_FSSF2_XTRAS_RISERS_1.wav');
 loadSound('thunder', 'audio/SHOCK_RIFLE_Clap_Thunder_Tail_01_mono.wav');
 loadSound('bomb', 'audio/FIREWORKS_Rocket_Explode_Distant_mono.wav');
+loadSound('geiger', 'audio/Geiger Counter.wav');
 loadSound(
   'slow',
   'audio/CHARGE_Sci-Fi_High_Pass_Sweep_12_Semi_Down_500ms_stereo.wav'
@@ -242,7 +243,7 @@ scene('jeu', () => {
       // diminuer les vies
       vies--;
       // s'il n'y en a plus...
-      if (vies == 0) {
+      if (vies <= 0) {
         // appel de la scène d'échec
         // et passage d'un paramètre qui sera récupéré
         // dans cette scène
@@ -416,7 +417,8 @@ scene('jeu', () => {
   });
 
   ball.onCollide('radionucleide', (b) => {
-    // play('quake');
+    play('geiger');
+    
     ball.velocite = dir(ball.pos.angle(b.pos));
 
     wait(5, () => b.destroy());

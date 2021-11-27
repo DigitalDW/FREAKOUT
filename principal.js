@@ -254,7 +254,7 @@ scene('jeu', () => {
     // Destroy and bounce
     b.destroy();
     ball.velocite = dir(ball.pos.angle(b.pos));
-
+    
     play('reussite');
 
     // augmenter le score
@@ -300,7 +300,7 @@ scene('jeu', () => {
     // Destroy and bounce
     b.destroy();
     ball.velocite = dir(ball.pos.angle(b.pos));
-
+    
     play('reussite');
 
     vitesse = 400;
@@ -316,7 +316,7 @@ scene('jeu', () => {
     // Destroy and bounce
     b.destroy();
     ball.velocite = dir(ball.pos.angle(b.pos));
-
+    
     play('reussite');
 
     vitesse = 800;
@@ -332,7 +332,7 @@ scene('jeu', () => {
     // Destroy and bounce
     b.destroy();
     ball.velocite = dir(ball.pos.angle(b.pos));
-
+    
     play('quake');
 
     shake(300);
@@ -340,7 +340,6 @@ scene('jeu', () => {
     every('brique', (b) => {
       b.pos.x = b.pos.x + rand(-50, 50);
       b.pos.y = b.pos.y + rand(-50, 50);
-      b.use(rotate(rand(-30, 30)));
     });
     ball.velocite = dir(ball.pos.angle(b.pos));
 
@@ -348,95 +347,19 @@ scene('jeu', () => {
     score++;
   });
 
-  ball.onCollide('radionucleide', (b) => {
-    // play('quake');
-    ball.velocite = dir(ball.pos.angle(b.pos));
-
-    wait(5, () => b.destroy());
-
-    for (let i = 0; i < 5; i++) {
-      wait(i, () => {
-        let ballR = add([
-          pos(b.pos.x, b.pos.y),
-          // créer un cercle de rayon 16
-          circle(16),
-          outline(4),
-          color(77, 255, 77),
-          opacity(0.6),
-          area({
-            width: 32,
-            height: 32,
-            offset: vec2(-16),
-          }),
-          {
-            // dir extrait le vecteur de direction
-            // à partir d'un angle donné
-            velocite: dir(rand(-80, 80)),
-            // notez que nous définissons velocite ici
-            // il n'appartient pas au langage
-          },
-        ]);
-        ballR.onUpdate(() => {
-          // déplacer la balle
-          ballR.move(ballR.velocite.scale(vitesse));
-          // gérer les rebonds sur les murs latéraux...
-          if (ballR.pos.x < 0 || ballR.pos.x > width()) {
-            // et renvoyer la balle
-            ballR.velocite.x = -ballR.velocite.x;
-          }
-          // si la balle tape au sommet...
-          if (ballR.pos.y < 0) {
-            // elle repart dans l'autre sens
-            ballR.velocite.y = -ballR.velocite.y;
-          }
-        });
-        // gérer le cas où la balle sort par le bas
-        if (ballR.pos.y > height() + 60) {
-          // secouer l'écran
-          shake(30);
-          play('echec');
-          // réinitialiser la balle, sa vitesse, etc.
-          ballR.pos.x = width() / 2;
-          ballR.pos.y = height() - 55;
-          //vitesse = 320;
-          ballR.velocite = dir(rand(220, 290));
-          // diminuer les vies
-          vies--;
-          console.log(vies);
-          // s'il n'y en a plus...
-          if (vies == 0) {
-            // appel de la scène d'échec
-            // et passage d'un paramètre qui sera récupéré
-            // dans cette scène
-            musique.stop();
-            go('ohno', { score: score });
-          }
-        }
-        ballR.onCollide('paddle', (p) => {
-          vitesse += 0;
-          // renvoyer la balle avec le bon angle
-          ballR.velocite = dir(ballR.pos.angle(p.pos));
-        });
-        ballR.onCollide('brique', (b) => {
-          // augmenter le score
-
-          if (!b.is('radionucleide')) {
-            score++;
-            b.destroy();
-          }
-          ballR.velocite = dir(ballR.pos.angle(b.pos));
-        });
-        wait(5, () => ballR.destroy());
-      });
-    }
-  });
-
   ball.onCollide('doppelganger', (b) => {
     // play('quake');
     b.destroy();
     ball.velocite = dir(ball.pos.angle(b.pos));
-    let ballD = add([
-      pos(ball.pos.x, 50),
+
+    let posX = 0;
+    if (ball.pos.x - 50 < 0) {
+      posX = ball.pos.x + 50;
+    } else if (ball.pos.x + 50 > width()) {
+      posX = ball.pos.x - 50;
+    }
+    let ball2 = add([
+      pos(posX, 50),
       // créer un cercle de rayon 16
       circle(16),
       outline(4),
@@ -453,24 +376,24 @@ scene('jeu', () => {
         // il n'appartient pas au langage
       },
     ]);
-    ballD.onUpdate(() => {
+    ball2.onUpdate(() => {
       // déplacer la balle
-      ballD.move(ballD.velocite.scale(vitesse));
+      ball2.move(ball2.velocite.scale(vitesse));
       // gérer les rebonds sur les murs latéraux...
-      if (ballD.pos.x < 0 || ballD.pos.x > width()) {
+      if (ball2.pos.x < 0 || ball2.pos.x > width()) {
         // et renvoyer la balle
-        ballD.velocite.x = -ballD.velocite.x;
+        ball2.velocite.x = -ball2.velocite.x;
       }
       // si la balle tape au sommet...
-      if (ballD.pos.y < 0) {
+      if (ball2.pos.y < 0) {
         // elle repart dans l'autre sens
-        ballD.velocite.y = -ballD.velocite.y;
+        ball2.velocite.y = -ball2.velocite.y;
       }
     });
-    ballD.onCollide('brique', (b) => {
+    ball2.onCollide('brique', (b) => {
       // augmenter le score
       score++;
-      ballD.velocite = dir(ballD.pos.angle(b.pos));
+      ball2.velocite = dir(ball2.pos.angle(b.pos));
     });
   });
 });
@@ -520,6 +443,8 @@ function mutateSpecials() {
       b.unuse('fall');
     } else if (b.is('quake')) {
       b.unuse('quake');
+    } else if (b.is('pinball')) {
+      b.unuse('pinball');
     } else if (b.is('radionucleide')) {
       b.unuse('radionucleide');
     } else if (b.is('standard')) {
@@ -527,20 +452,21 @@ function mutateSpecials() {
     }
     if (chance(0.25)) {
       const type = choose([
-        // 'slowdown',
-        // 'slowdown',
-        // 'slowdown',
-        // 'accelerate',
-        // 'accelerate',
-        // 'accelerate',
-        // 'bomb',
-        // 'bomb',
-        // 'bomb',
-        // 'doppelganger',
-        // 'doppelganger',
-        // 'doppelganger',
-        // 'fall',
-        // 'quake',
+        'slowdown',
+        'slowdown',
+        'slowdown',
+        'accelerate',
+        'accelerate',
+        'accelerate',
+        'bomb',
+        'bomb',
+        'bomb',
+        'doppelganger',
+        'doppelganger',
+        'doppelganger',
+        'fall',
+        'quake',
+        'pinball',
         'radionucleide',
       ]);
 
@@ -557,6 +483,8 @@ function mutateSpecials() {
         b.use(color(50, 50, 50));
       } else if (b.is('quake')) {
         b.use(color(153, 102, 51));
+      } else if (b.is('pinball')) {
+        b.use(color(158, 158, 158));
       } else if (b.is('radionucleide')) {
         loop(0.1, () => {
           b.use(rotate(rand(5)));

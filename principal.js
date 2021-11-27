@@ -405,6 +405,90 @@ scene('jeu', () => {
       });
     })
   });
+
+
+  ball.onCollide('radionucleide', (b) => {
+    // play('quake');
+    ball.velocite = dir(ball.pos.angle(b.pos));
+
+    wait(5, () => b.destroy());
+
+    for (let i = 0; i < 5; i++) {
+      wait(i, () => {
+        let ballR = add([
+          pos(b.pos.x, b.pos.y),
+          // créer un cercle de rayon 16
+          circle(16),
+          outline(4),
+          color(77, 255, 77),
+          opacity(0.6),
+          area({
+            width: 32,
+            height: 32,
+            offset: vec2(-16),
+          }),
+          {
+            // dir extrait le vecteur de direction
+            // à partir d'un angle donné
+            velocite: dir(rand(-80, 80)),
+            // notez que nous définissons velocite ici
+            // il n'appartient pas au langage
+          },
+        ]);
+        ballR.onUpdate(() => {
+          // déplacer la balle
+          ballR.move(ballR.velocite.scale(vitesse));
+          // gérer les rebonds sur les murs latéraux...
+          if (ballR.pos.x < 0 || ballR.pos.x > width()) {
+            // et renvoyer la balle
+            ballR.velocite.x = -ballR.velocite.x;
+          }
+          // si la balle tape au sommet...
+          if (ballR.pos.y < 0) {
+            // elle repart dans l'autre sens
+            ballR.velocite.y = -ballR.velocite.y;
+          }
+        });
+        // gérer le cas où la balle sort par le bas
+        if (ballR.pos.y > height() + 60) {
+          // secouer l'écran
+          shake(30);
+          play('echec');
+          // réinitialiser la balle, sa vitesse, etc.
+          ballR.pos.x = width() / 2;
+          ballR.pos.y = height() - 55;
+          //vitesse = 320;
+          ballR.velocite = dir(rand(220, 290));
+          // diminuer les vies
+          vies--;
+          console.log(vies);
+          // s'il n'y en a plus...
+          if (vies == 0) {
+            // appel de la scène d'échec
+            // et passage d'un paramètre qui sera récupéré
+            // dans cette scène
+            musique.stop();
+            go('ohno', { score: score });
+          }
+        }
+        ballR.onCollide('paddle', (p) => {
+          vitesse += 0;
+          // renvoyer la balle avec le bon angle
+          ballR.velocite = dir(ballR.pos.angle(p.pos));
+        });
+        ballR.onCollide('brique', (b) => {
+          // augmenter le score
+
+          if (!b.is('radionucleide')) {
+            score++;
+            b.destroy();
+          }
+          ballR.velocite = dir(ballR.pos.angle(b.pos));
+        });
+        wait(5, () => ballR.destroy());
+      });
+    }
+  });
 });
 
 // déclaration de la scène d'échec

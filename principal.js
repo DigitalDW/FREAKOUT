@@ -22,6 +22,8 @@ kaboom({
   height: 800,
 });
 
+randSeed(22071997);
+
 // définir un chemin racine pour les ressources
 // Ctte étape est facultative, elle sert juste
 // à raccourcir les chemins suivants
@@ -87,16 +89,17 @@ scene('jeu', () => {
   let score = 0;
   let vies = 3;
   let vitesse = 800;
+
   // dessiner un niveau
   addLevel(
     [
       '==============',
-      '==x========x==',
-      '==x========x==',
-      '======  ======',
       '==============',
       '==============',
-      '=xxx=x==x=xxx=',
+      '==============',
+      '==============',
+      '==============',
+      '==============',
     ],
     {
       // définir la taille de chaque élément
@@ -223,6 +226,7 @@ scene('jeu', () => {
   // avec tous les types de briques
   // grâce à l'identifiant "brique"
   ball.onCollide('brique', (b) => {
+    mutateSpecials();
     play('reussite');
     b.destroy();
     // augmenter le score
@@ -289,3 +293,15 @@ const standard = () => [
   // pour les interactions à venir
   'brique',
 ];
+
+
+
+function mutateSpecials() {
+  // S B A D F Q P R
+  every('brique', (b) => {
+    const coord = [b.pos.x, b.pos.y];
+    destroy(b);
+    const newBrick = [...standard];
+    add(newBrick.push()); // à définir
+  });
+}

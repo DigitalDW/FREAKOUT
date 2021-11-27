@@ -41,8 +41,8 @@ loadSound('gameMusic', 'audio/Iwan Gabovitch - Dark Ambience Loop.ogg');
 loadSound('reussite', 'audio/THUD_Bright_01_mono.wav');
 loadSound('echec', 'audio/echec.wav');
 loadSound('quake', 'audio/EXPLOSION_Distorted_03_Long_stereo.wav');
-loadSound('riser', 'audio/PM_FSSF2_TONAL_ENERGY_RISERS_4.wav');
-loadSound('thunder', 'audio/THUD_Bright_01_mono.wav');
+loadSound('riser', 'audio/PM_FSSF2_XTRAS_RISERS_1.wav');
+loadSound('thunder', 'audio/SHOCK_RIFLE_Clap_Thunder_Tail_01_mono.wav');
 loadSound('bomb', 'audio/FIREWORKS_Rocket_Explode_Distant_mono.wav');
 
 // déclaration d'une scène
@@ -66,7 +66,7 @@ scene('accueil', () => {
   loop(0.5, () => {
     add([
       // le texte est tiré aléatoirement dans ce tableau
-      text(choose(['UNIL', 'EPFL', 'SLI', 'CDH', 'GAMELAB', 'Lettres']), {
+      text(choose(['Loic', 'Loris']), {
         width: 800,
         font: 'sink',
         size: 48,
@@ -127,6 +127,7 @@ scene('jeu', () => {
         color(255, 255, 255),
         // ajouter une bordure
         outline(4, 10),
+        origin('center'),
         // donner une hitbox
         area(),
         // rendre l'élément réactif aux collisions
@@ -348,7 +349,9 @@ scene('jeu', () => {
   });
 
   ball.onCollide('doppelganger', (b) => {
-    // play('quake');
+    play('riser');
+
+    // Destroy and bounce
     b.destroy();
     ball.velocite = dir(ball.pos.angle(b.pos));
 
@@ -358,43 +361,47 @@ scene('jeu', () => {
     } else if (ball.pos.x + 50 > width()) {
       posX = ball.pos.x - 50;
     }
-    let ball2 = add([
-      pos(posX, 50),
-      // créer un cercle de rayon 16
-      circle(16),
-      outline(4),
-      area({
-        width: 32,
-        height: 32,
-        offset: vec2(-16),
-      }),
-      {
-        // dir extrait le vecteur de direction
-        // à partir d'un angle donné
-        velocite: dir(rand(-80, 80)),
-        // notez que nous définissons velocite ici
-        // il n'appartient pas au langage
-      },
-    ]);
-    ball2.onUpdate(() => {
-      // déplacer la balle
-      ball2.move(ball2.velocite.scale(vitesse));
-      // gérer les rebonds sur les murs latéraux...
-      if (ball2.pos.x < 0 || ball2.pos.x > width()) {
-        // et renvoyer la balle
-        ball2.velocite.x = -ball2.velocite.x;
-      }
-      // si la balle tape au sommet...
-      if (ball2.pos.y < 0) {
-        // elle repart dans l'autre sens
-        ball2.velocite.y = -ball2.velocite.y;
-      }
-    });
-    ball2.onCollide('brique', (b) => {
-      // augmenter le score
-      score++;
-      ball2.velocite = dir(ball2.pos.angle(b.pos));
-    });
+    wait (3.5, () => {
+      play('thunder');
+
+      let ball2 = add([
+        pos(posX, 50),
+        // créer un cercle de rayon 16
+        circle(16),
+        outline(4),
+        area({
+          width: 32,
+          height: 32,
+          offset: vec2(-16),
+        }),
+        {
+          // dir extrait le vecteur de direction
+          // à partir d'un angle donné
+          velocite: dir(rand(-80, 80)),
+          // notez que nous définissons velocite ici
+          // il n'appartient pas au langage
+        },
+      ]);
+      ball2.onUpdate(() => {
+        // déplacer la balle
+        ball2.move(ball2.velocite.scale(vitesse));
+        // gérer les rebonds sur les murs latéraux...
+        if (ball2.pos.x < 0 || ball2.pos.x > width()) {
+          // et renvoyer la balle
+          ball2.velocite.x = -ball2.velocite.x;
+        }
+        // si la balle tape au sommet...
+        if (ball2.pos.y < 0) {
+          // elle repart dans l'autre sens
+          ball2.velocite.y = -ball2.velocite.y;
+        }
+      });
+      ball2.onCollide('brique', (b) => {
+        // augmenter le score
+        score++;
+        ball2.velocite = dir(ball2.pos.angle(b.pos));
+      });
+    })
   });
 });
 

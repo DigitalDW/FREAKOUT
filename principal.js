@@ -90,7 +90,6 @@ scene('jeu', () => {
   let vies = 3;
   let vitesse = 800;
 
-  const levelTab = populateSpecials();
   // dessiner un niveau
   addLevel(
     [
@@ -241,6 +240,7 @@ scene('jeu', () => {
   // avec tous les types de briques
   // grâce à l'identifiant "brique"
   ball.onCollide('brique', (b) => {
+    mutateSpecials();
     play('reussite');
     b.destroy();
     // augmenter le score
@@ -289,5 +289,12 @@ Et ensuite, vous pourrez vous attacher aux conditions de victoire,
 en faisant la part belle à l'incertitude !
 
 */
-
-function populateSpecials() {}
+function mutateSpecials() {
+  // S B A D F Q P R
+  every('brique', (b) => {
+    const coord = [b.pos.x, b.pos.y];
+    destroy(b);
+    const newBrick = [...standard];
+    add(newBrick.push()); // à définir
+  });
+}

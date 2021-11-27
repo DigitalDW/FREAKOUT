@@ -274,6 +274,7 @@ scene('jeu', () => {
   });
 
   ball.onCollide('quake', (b) => {
+    play('quake');
     shake(300);
     every('brique', (b) => {
       b.pos.x = b.pos.x + rand(-50, 50);

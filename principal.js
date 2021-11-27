@@ -294,14 +294,16 @@ const standard = () => [
   'brique',
 ];
 
-
-
 function mutateSpecials() {
   // S B A D F Q P R
   every('brique', (b) => {
     const coord = [b.pos.x, b.pos.y];
     destroy(b);
-    const newBrick = [...standard];
+    const newBrick = [...chooseBrickType()];
     add(newBrick.push()); // à définir
   });
+}
+
+function chooseBrickType() {
+  return chance(0.75) ? standard : choose();
 }

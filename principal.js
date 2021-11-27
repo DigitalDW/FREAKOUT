@@ -38,6 +38,7 @@ loadSound('menuMusic', 'audio/before_the_dawn.ogg');
 loadSound('gameMusic', 'audio/Iwan Gabovitch - Dark Ambience Loop.ogg');
 loadSound('reussite', 'audio/THUD_Bright_01_mono.wav');
 loadSound('echec', 'audio/echec.wav');
+loadSound('quake', 'audio/EXPLOSION_Distorted_03_Long_stereo.wav');
 
 // déclaration d'une scène
 // les scènes découpent le jeu
@@ -241,6 +242,7 @@ scene('jeu', () => {
     // renvoyer la balle avec le bon angle
     ball.velocite = dir(ball.pos.angle(p.pos));
   });
+
   // avec tous les types de briques
   // grâce à l'identifiant "brique"
   ball.onCollide('standard', (b) => {
@@ -252,6 +254,7 @@ scene('jeu', () => {
     // b.use(color(255, 255, 255));
     // b.use('foo');
   });
+
   // avec les briques spéciales
   // grâce à l'identifiant "special"
   ball.onCollide('fall', (b) => {

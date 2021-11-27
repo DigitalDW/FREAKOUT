@@ -218,11 +218,14 @@ scene('jeu', () => {
     ball.move(ball.velocite.scale(vitesse));
     // gérer les rebonds sur les murs latéraux...
     if (ball.pos.x < 0 || ball.pos.x > width()) {
+      if (ball.pos.x < 0) ball.pos.x = 0;
+      if (ball.pos.x > width()) ball.pos.x = width();
       // et renvoyer la balle
       ball.velocite.x = -ball.velocite.x;
     }
     // si la balle tape au sommet...
     if (ball.pos.y < 0) {
+      ball.pos.y = 0;
       // elle repart dans l'autre sens
       ball.velocite.y = -ball.velocite.y;
     }

@@ -522,6 +522,7 @@ en faisant la part belle à l'incertitude !
 function mutateSpecials() {
   // Remove animation loops (radionucleide)
   loopCancelers.forEach((l) => l());
+  loopCancelers.length = 0;
 
   // S B A D F Q P R
   every('brique', (b) => {
@@ -584,7 +585,7 @@ function mutateSpecials() {
         b.use(color(158, 158, 158));
       } else if (b.is('radionucleide')) {
         loopCancelers.push(loop(0.05, () => {
-          b.use(rotate(rand(5)));
+          b.use(rotate(rand(10) - 5));
         }));
         b.use(color(77, 255, 77));
       }

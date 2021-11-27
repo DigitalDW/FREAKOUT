@@ -280,7 +280,6 @@ scene('jeu', () => {
       b.pos.x = b.pos.x + rand(-50, 50);
       b.pos.y = b.pos.y + rand(-50, 50);
     });
-    every('brique', (b) => console.log(b.pos));
     ball.velocite = dir(ball.pos.angle(b.pos));
   });
 });

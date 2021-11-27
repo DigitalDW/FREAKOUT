@@ -289,6 +289,17 @@ en faisant la part belle à l'incertitude !
 
 */
 
+const brickTypes = [
+  'slowdown',
+  'accelerate',
+  'bomb',
+  'doppelganger',
+  'fall',
+  'quake',
+  'pinball',
+  'radionucleide',
+];
+
 function mutateSpecials() {
   // S B A D F Q P R
 

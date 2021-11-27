@@ -120,7 +120,7 @@ scene('jeu', () => {
       width: 65,
       height: 33,
       // définir où positionner le début de la grille
-      pos: vec2(100, 200),
+      pos: vec2(180, 200),
       // associer chaque symbole à un composant
       '=': () => [
         // joindre le sprite
@@ -500,7 +500,7 @@ function mutateSpecials() {
         b.use(color(158, 158, 158));
       } else if (b.is('radionucleide')) {
         loopCancelers.push(loop(0.05, () => {
-          b.use(rotate(rand(5)));
+          b.use(rotate(rand(10) -5));
         }));
         b.use(color(77, 255, 77));
       }

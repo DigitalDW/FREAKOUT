@@ -22,6 +22,8 @@ kaboom({
   height: 800,
 });
 
+randSeed(22071997);
+
 // définir un chemin racine pour les ressources
 // Ctte étape est facultative, elle sert juste
 // à raccourcir les chemins suivants
@@ -91,12 +93,12 @@ scene('jeu', () => {
   addLevel(
     [
       '==============',
-      '==x========x==',
-      '==x========x==',
-      '======  ======',
       '==============',
       '==============',
-      '=xxx=x==x=xxx=',
+      '==============',
+      '==============',
+      '==============',
+      '==============',
     ],
     {
       // définir la taille de chaque élément

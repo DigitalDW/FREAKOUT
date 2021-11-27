@@ -294,7 +294,14 @@ const standard = () => [
   'brique',
 ];
 
-
+const slowdown = standard;
+const accelerate = standard;
+const bomb = standard;
+const doppelganger = standard;
+const fall = standard;
+const quake = standard;
+const pinball = standard;
+const radionucleide = standard;
 
 function mutateSpecials() {
   // S B A D F Q P R

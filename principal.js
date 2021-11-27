@@ -22,6 +22,8 @@ kaboom({
   height: 800,
 });
 
+const DEFAULT_SPEED = 600;
+
 randSeed(22071997);
 
 // définir un chemin racine pour les ressources
@@ -39,6 +41,8 @@ loadSound('gameMusic', 'audio/Iwan Gabovitch - Dark Ambience Loop.ogg');
 loadSound('reussite', 'audio/THUD_Bright_01_mono.wav');
 loadSound('echec', 'audio/echec.wav');
 loadSound('quake', 'audio/EXPLOSION_Distorted_03_Long_stereo.wav');
+loadSound('riser', 'audio/PM_FSSF2_TONAL_ENERGY_RISERS_4.wav');
+loadSound('thunder', 'audio/THUD_Bright_01_mono.wav');
 
 // déclaration d'une scène
 // les scènes découpent le jeu
@@ -90,7 +94,7 @@ scene('jeu', () => {
   // score à zéro et vies à 3
   let score = 0;
   let vies = 3;
-  let vitesse = 600;
+  let vitesse = DEFAULT_SPEED;
 
   const musique = play('gameMusic', {
     seek: 4.822,
@@ -265,12 +269,20 @@ scene('jeu', () => {
     ball.velocite = dir(ball.pos.angle(b.pos));
   });
 
+  ball.onCollide('bomb', (b) => {});
+
   ball.onCollide('slowdown', (b) => {
     vitesse = 400;
+    wait(5, () => {
+      vitesse = DEFAULT_SPEED;
+    });
   });
 
   ball.onCollide('accelerate', (b) => {
     vitesse = 800;
+    wait(5, () => {
+      vitesse = DEFAULT_SPEED;
+    });
   });
 
   ball.onCollide('quake', (b) => {
@@ -389,20 +401,20 @@ function mutateSpecials() {
     }
     if (chance(0.25)) {
       const type = choose([
-        // 'slowdown',
-        // 'slowdown',
-        // 'slowdown',
-        // 'accelerate',
-        // 'accelerate',
-        // 'accelerate',
-        // 'bomb',
-        // 'doppelganger',
+        'slowdown',
+        'slowdown',
+        'slowdown',
+        'accelerate',
+        'accelerate',
+        'accelerate',
+        'bomb',
         'doppelganger',
-        // 'doppelganger',
-        // 'fall',
-        // 'quake',
-        // 'pinball',
-        // 'radionucleide',
+        'doppelganger',
+        'doppelganger',
+        'fall',
+        'quake',
+        'pinball',
+        'radionucleide',
       ]);
 
       b.use(type);

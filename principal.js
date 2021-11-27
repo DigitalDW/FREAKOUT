@@ -128,7 +128,7 @@ scene('jeu', () => {
 
   // Changer certaines briques pour un comprtement spécial
   mutateSpecials();
-  
+
   //  Boucle temporelle qui change les aléatoirement les briques
   loop(1, () => {
     mutateSpecials();
@@ -242,7 +242,7 @@ scene('jeu', () => {
     // augmenter le score
     score++;
     ball.velocite = dir(ball.pos.angle(b.pos));
-    b.use(color(255,255,255))
+    b.use(color(255, 255, 255));
     b.use('foo');
   });
   // avec les briques spéciales
@@ -289,21 +289,28 @@ en faisant la part belle à l'incertitude !
 
 */
 
-const brickTypes = [
-  'slowdown',
-  'accelerate',
-  'bomb',
-  'doppelganger',
-  'fall',
-  'quake',
-  'pinball',
-  'radionucleide',
-];
-
 function mutateSpecials() {
   // S B A D F Q P R
-
   every('brique', (b) => {
+    b.use(color(255, 255, 255));
+
+    if (b.is('slowdown')) {
+      b.unuse('slowdown');
+    } else if (b.is('accelerate')) {
+      b.unuse('accelerate');
+    } else if (b.is('bomb')) {
+      b.unuse('bomb');
+    } else if (b.is('doppelganger')) {
+      b.unuse('doppelganger');
+    } else if (b.is('fall')) {
+      b.unuse('fall');
+    } else if (b.is('quake')) {
+      b.unuse('quake');
+    } else if (b.is('pinball')) {
+      b.unuse('pinball');
+    } else if (b.is('radionucleide')) {
+      b.unuse('radionucleide');
+    }
     if (chance(0.25)) {
       const type = choose([
         'slowdown',
@@ -321,6 +328,7 @@ function mutateSpecials() {
         'pinball',
         'radionucleide',
       ]);
+
       b.use(type);
       if (b.is('slowdown')) {
         b.use(color(36, 20, 159));
@@ -342,3 +350,14 @@ function mutateSpecials() {
     }
   });
 }
+
+const brickTypes = [
+  'slowdown',
+  'accelerate',
+  'bomb',
+  'doppelganger',
+  'fall',
+  'quake',
+  'pinball',
+  'radionucleide',
+];

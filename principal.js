@@ -44,8 +44,14 @@ loadSound('quake', 'audio/EXPLOSION_Distorted_03_Long_stereo.wav');
 loadSound('riser', 'audio/PM_FSSF2_XTRAS_RISERS_1.wav');
 loadSound('thunder', 'audio/SHOCK_RIFLE_Clap_Thunder_Tail_01_mono.wav');
 loadSound('bomb', 'audio/FIREWORKS_Rocket_Explode_Distant_mono.wav');
-loadSound('slow', 'audio/CHARGE_Sci-Fi_High_Pass_Sweep_12_Semi_Down_500ms_stereo.wav');
-loadSound('accel', 'audio/CHARGE_Sci-Fi_High_Pass_Sweep_12_Semi_Up_500ms_stereo.wav');
+loadSound(
+  'slow',
+  'audio/CHARGE_Sci-Fi_High_Pass_Sweep_12_Semi_Down_500ms_stereo.wav'
+);
+loadSound(
+  'accel',
+  'audio/CHARGE_Sci-Fi_High_Pass_Sweep_12_Semi_Up_500ms_stereo.wav'
+);
 
 // déclaration d'une scène
 // les scènes découpent le jeu
@@ -257,7 +263,7 @@ scene('jeu', () => {
     // Destroy and bounce
     b.destroy();
     ball.velocite = dir(ball.pos.angle(b.pos));
-    
+
     play('reussite');
 
     // augmenter le score
@@ -303,7 +309,7 @@ scene('jeu', () => {
     // Destroy and bounce
     b.destroy();
     ball.velocite = dir(ball.pos.angle(b.pos));
-    
+
     play('slow');
 
     vitesse = 400;
@@ -319,7 +325,7 @@ scene('jeu', () => {
     // Destroy and bounce
     b.destroy();
     ball.velocite = dir(ball.pos.angle(b.pos));
-    
+
     play('accel');
 
     vitesse = 800;
@@ -335,7 +341,7 @@ scene('jeu', () => {
     // Destroy and bounce
     b.destroy();
     ball.velocite = dir(ball.pos.angle(b.pos));
-    
+
     play('quake');
 
     shake(300);
@@ -363,7 +369,7 @@ scene('jeu', () => {
     } else if (ball.pos.x + 50 > width()) {
       posX = ball.pos.x - 50;
     }
-    wait (3.5, () => {
+    wait(3.5, () => {
       play('thunder');
 
       let ball2 = add([
@@ -403,9 +409,8 @@ scene('jeu', () => {
         score++;
         ball2.velocite = dir(ball2.pos.angle(b.pos));
       });
-    })
+    });
   });
-
 
   ball.onCollide('radionucleide', (b) => {
     // play('quake');
@@ -539,8 +544,6 @@ function mutateSpecials() {
       b.unuse('fall');
     } else if (b.is('quake')) {
       b.unuse('quake');
-    } else if (b.is('pinball')) {
-      b.unuse('pinball');
     } else if (b.is('radionucleide')) {
       b.use(rotate(0));
       b.unuse('radionucleide');
@@ -580,12 +583,12 @@ function mutateSpecials() {
         b.use(color(50, 50, 50));
       } else if (b.is('quake')) {
         b.use(color(153, 102, 51));
-      } else if (b.is('pinball')) {
-        b.use(color(158, 158, 158));
       } else if (b.is('radionucleide')) {
-        loopCancelers.push(loop(0.05, () => {
-          b.use(rotate(rand(5)));
-        }));
+        loopCancelers.push(
+          loop(0.05, () => {
+            b.use(rotate(rand(5)));
+          })
+        );
         b.use(color(77, 255, 77));
       }
     } else {

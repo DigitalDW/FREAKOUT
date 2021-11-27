@@ -123,23 +123,17 @@ scene('jeu', () => {
         // pour les interactions à venir
         'brique',
       ],
-      x: () => [
-        sprite('tuile'),
-        // modifier sa couleur
-        color(255, 0, 0),
-        // ajouter une bordure
-        outline(4, 10),
-        // donner une hitbox
-        area(),
-        // rendre l'élément réactif aux collisions
-        solid(),
-        // lui donner un identifiant
-        // pour les interactions à venir
-        'brique',
-      ],
     }
   );
+
+  // Changer certaines briques pour un comprtement spécial
   mutateSpecials();
+  
+  //  Boucle temporelle qui change les aléatoirement les briques
+  loop(1, () => {
+    mutateSpecials();
+  });
+
   // le palet
   const palet = add([
     pos(vec2(width() / 2 - 40, height() - 40)),

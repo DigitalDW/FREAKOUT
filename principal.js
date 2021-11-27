@@ -44,6 +44,8 @@ loadSound('quake', 'audio/EXPLOSION_Distorted_03_Long_stereo.wav');
 loadSound('riser', 'audio/PM_FSSF2_XTRAS_RISERS_1.wav');
 loadSound('thunder', 'audio/SHOCK_RIFLE_Clap_Thunder_Tail_01_mono.wav');
 loadSound('bomb', 'audio/FIREWORKS_Rocket_Explode_Distant_mono.wav');
+loadSound('slow', 'audio/CHARGE_Sci-Fi_High_Pass_Sweep_12_Semi_Down_500ms_stereo.wav');
+loadSound('accel', 'audio/CHARGE_Sci-Fi_High_Pass_Sweep_12_Semi_Up_500ms_stereo.wav');
 
 // déclaration d'une scène
 // les scènes découpent le jeu
@@ -302,7 +304,7 @@ scene('jeu', () => {
     b.destroy();
     ball.velocite = dir(ball.pos.angle(b.pos));
     
-    play('reussite');
+    play('slow');
 
     vitesse = 400;
     wait(5, () => {
@@ -318,7 +320,7 @@ scene('jeu', () => {
     b.destroy();
     ball.velocite = dir(ball.pos.angle(b.pos));
     
-    play('reussite');
+    play('accel');
 
     vitesse = 800;
     wait(5, () => {
@@ -434,6 +436,9 @@ en faisant la part belle à l'incertitude !
 */
 
 function mutateSpecials() {
+  // Remove animation loops (radionucleide)
+  loopCancelers.forEach((l) => l());
+
   // S B A D F Q P R
   every('brique', (b) => {
     b.use(color(255, 255, 255));
@@ -453,6 +458,7 @@ function mutateSpecials() {
     } else if (b.is('pinball')) {
       b.unuse('pinball');
     } else if (b.is('radionucleide')) {
+      b.use(rotate(0));
       b.unuse('radionucleide');
     } else if (b.is('standard')) {
       b.unuse('standard');
@@ -493,9 +499,9 @@ function mutateSpecials() {
       } else if (b.is('pinball')) {
         b.use(color(158, 158, 158));
       } else if (b.is('radionucleide')) {
-        loop(0.1, () => {
+        loopCancelers.push(loop(0.05, () => {
           b.use(rotate(rand(5)));
-        });
+        }));
         b.use(color(77, 255, 77));
       }
     } else {
@@ -504,6 +510,8 @@ function mutateSpecials() {
     }
   });
 }
+
+const loopCancelers = [];
 
 const brickTypes = [
   'slowdown',

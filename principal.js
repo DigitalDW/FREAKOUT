@@ -130,7 +130,7 @@ scene('jeu', () => {
   mutateSpecials();
 
   //  Boucle temporelle qui change les aléatoirement les briques
-  loop(1, () => {
+  loop(15, () => {
     mutateSpecials();
   });
 
@@ -236,26 +236,24 @@ scene('jeu', () => {
   });
   // avec tous les types de briques
   // grâce à l'identifiant "brique"
-  ball.onCollide('brique', (b) => {
+  ball.onCollide('standard', (b) => {
     play('reussite');
-    //b.destroy();
+    b.destroy();
     // augmenter le score
     score++;
     ball.velocite = dir(ball.pos.angle(b.pos));
-    b.use(color(255, 255, 255));
-    b.use('foo');
+    // b.use(color(255, 255, 255));
+    // b.use('foo');
   });
   // avec les briques spéciales
   // grâce à l'identifiant "special"
-  ball.onCollide('special', (b) => {
-    play('reussite');
-    b.destroy();
-    // Kaboom ne gère que le rgb, mais des fonctions
-    // de conversions nous permettent d'utiliser du hsl !
-    palet.color = hsl2rgb((time() * 0.2 + 1 * 0.1) % 1, 0.7, 0.8);
-    // transformer aléatoirement la taille du palet
-    palet.width = randi(50, 200);
-    palet.height = randi(20, 100);
+  ball.onCollide('fall', (b) => {
+    b.use(body());
+    b.onCollide('paddle', (p) => {
+      shake(30);
+      play('echec');
+      vies--;
+    });
     ball.velocite = dir(ball.pos.angle(b.pos));
   });
   mutateSpecials();
@@ -293,7 +291,7 @@ function mutateSpecials() {
   // S B A D F Q P R
   every('brique', (b) => {
     b.use(color(255, 255, 255));
-
+    b.unuse(body());
     if (b.is('slowdown')) {
       b.unuse('slowdown');
     } else if (b.is('accelerate')) {
@@ -310,6 +308,8 @@ function mutateSpecials() {
       b.unuse('pinball');
     } else if (b.is('radionucleide')) {
       b.unuse('radionucleide');
+    } else if (b.is('standard')) {
+      b.unuse('standard');
     }
     if (chance(0.25)) {
       const type = choose([
@@ -347,6 +347,9 @@ function mutateSpecials() {
       } else if (b.is('radionucleide')) {
         b.use(color(77, 255, 77));
       }
+    } else {
+      b.use('standard');
+      b.use(color(255, 255, 255));
     }
   });
 }

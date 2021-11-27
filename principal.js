@@ -263,7 +263,15 @@ scene('jeu', () => {
     });
     ball.velocite = dir(ball.pos.angle(b.pos));
   });
-  mutateSpecials();
+
+  ball.onCollide('slowdown', (b) => {
+    vitesse = 400;
+  });
+
+  ball.onCollide('accelerate', (b) => {
+    vitesse = 800;
+  });
+
 });
 
 // déclaration de la scène d'échec

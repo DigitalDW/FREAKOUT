@@ -89,6 +89,8 @@ scene('jeu', () => {
   let score = 0;
   let vies = 3;
   let vitesse = 800;
+
+  const levelTab = populateSpecials();
   // dessiner un niveau
   addLevel(
     [
@@ -287,3 +289,5 @@ Et ensuite, vous pourrez vous attacher aux conditions de victoire,
 en faisant la part belle à l'incertitude !
 
 */
+
+function populateSpecials() {}

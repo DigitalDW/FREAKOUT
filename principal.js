@@ -22,6 +22,8 @@ kaboom({
   height: 800,
 });
 
+const DEFAULT_SPEED = 600;
+
 randSeed(22071997);
 
 // définir un chemin racine pour les ressources
@@ -90,7 +92,7 @@ scene('jeu', () => {
   // score à zéro et vies à 3
   let score = 0;
   let vies = 3;
-  let vitesse = 600;
+  let vitesse = DEFAULT_SPEED;
 
   const musique = play('gameMusic', {
     seek: 4.822,
@@ -265,12 +267,22 @@ scene('jeu', () => {
     ball.velocite = dir(ball.pos.angle(b.pos));
   });
 
+  ball.onCollide('bomb', (b) => {
+    
+  });
+
   ball.onCollide('slowdown', (b) => {
     vitesse = 400;
+    wait(5, () => {
+      vitesse = DEFAULT_SPEED;
+    });
   });
 
   ball.onCollide('accelerate', (b) => {
     vitesse = 800;
+    wait(5, () => {
+      vitesse = DEFAULT_SPEED;
+    });
   });
 
   ball.onCollide('quake', (b) => {
@@ -338,20 +350,20 @@ function mutateSpecials() {
     }
     if (chance(0.25)) {
       const type = choose([
-        // 'slowdown',
-        // 'slowdown',
-        // 'slowdown',
-        // 'accelerate',
-        // 'accelerate',
-        // 'accelerate',
-        // 'bomb',
-        // 'doppelganger',
-        // 'doppelganger',
-        // 'doppelganger',
-        //'fall',
+        'slowdown',
+        'slowdown',
+        'slowdown',
+        'accelerate',
+        'accelerate',
+        'accelerate',
+        'bomb',
+        'doppelganger',
+        'doppelganger',
+        'doppelganger',
+        'fall',
         'quake',
-        // 'pinball',
-        // 'radionucleide',
+        'pinball',
+        'radionucleide',
       ]);
 
       b.use(type);

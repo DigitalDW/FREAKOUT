@@ -41,17 +41,9 @@ loadSound('gameMusic', 'audio/Iwan Gabovitch - Dark Ambience Loop.ogg');
 loadSound('reussite', 'audio/THUD_Bright_01_mono.wav');
 loadSound('echec', 'audio/echec.wav');
 loadSound('quake', 'audio/EXPLOSION_Distorted_03_Long_stereo.wav');
-loadSound('riser', 'audio/PM_FSSF2_XTRAS_RISERS_1.wav');
-loadSound('thunder', 'audio/SHOCK_RIFLE_Clap_Thunder_Tail_01_mono.wav');
+loadSound('riser', 'audio/PM_FSSF2_TONAL_ENERGY_RISERS_4.wav');
+loadSound('thunder', 'audio/THUD_Bright_01_mono.wav');
 loadSound('bomb', 'audio/FIREWORKS_Rocket_Explode_Distant_mono.wav');
-loadSound(
-  'slow',
-  'audio/CHARGE_Sci-Fi_High_Pass_Sweep_12_Semi_Down_500ms_stereo.wav'
-);
-loadSound(
-  'accel',
-  'audio/CHARGE_Sci-Fi_High_Pass_Sweep_12_Semi_Up_500ms_stereo.wav'
-);
 
 // déclaration d'une scène
 // les scènes découpent le jeu
@@ -74,7 +66,7 @@ scene('accueil', () => {
   loop(0.5, () => {
     add([
       // le texte est tiré aléatoirement dans ce tableau
-      text(choose(['Loic', 'Loris']), {
+      text(choose(['UNIL', 'EPFL', 'SLI', 'CDH', 'GAMELAB', 'Lettres']), {
         width: 800,
         font: 'sink',
         size: 48,
@@ -135,7 +127,6 @@ scene('jeu', () => {
         color(255, 255, 255),
         // ajouter une bordure
         outline(4, 10),
-        origin('center'),
         // donner une hitbox
         area(),
         // rendre l'élément réactif aux collisions
@@ -310,7 +301,7 @@ scene('jeu', () => {
     b.destroy();
     ball.velocite = dir(ball.pos.angle(b.pos));
 
-    play('slow');
+    play('reussite');
 
     vitesse = 400;
     wait(5, () => {
@@ -326,7 +317,7 @@ scene('jeu', () => {
     b.destroy();
     ball.velocite = dir(ball.pos.angle(b.pos));
 
-    play('accel');
+    play('reussite');
 
     vitesse = 800;
     wait(5, () => {
@@ -357,11 +348,8 @@ scene('jeu', () => {
     score++;
   });
 
-  ball.onCollide('doppelganger', (b) => {
-    play('riser');
-
-    // Destroy and bounce
-    b.destroy();
+  ball.onCollide('radionucleide', (b) => {
+    // play('quake');
     ball.velocite = dir(ball.pos.angle(b.pos));
 
     wait(5, () => b.destroy());
@@ -516,9 +504,6 @@ en faisant la part belle à l'incertitude !
 */
 
 function mutateSpecials() {
-  // Remove animation loops (radionucleide)
-  loopCancelers.forEach((l) => l());
-
   // S B A D F Q P R
   every('brique', (b) => {
     b.use(color(255, 255, 255));
@@ -536,7 +521,6 @@ function mutateSpecials() {
     } else if (b.is('quake')) {
       b.unuse('quake');
     } else if (b.is('radionucleide')) {
-      b.use(rotate(0));
       b.unuse('radionucleide');
     } else if (b.is('standard')) {
       b.unuse('standard');
@@ -574,11 +558,9 @@ function mutateSpecials() {
       } else if (b.is('quake')) {
         b.use(color(153, 102, 51));
       } else if (b.is('radionucleide')) {
-        loopCancelers.push(
-          loop(0.05, () => {
-            b.use(rotate(rand(5)));
-          })
-        );
+        loop(0.1, () => {
+          b.use(rotate(rand(5)));
+        });
         b.use(color(77, 255, 77));
       }
     } else {
@@ -587,8 +569,6 @@ function mutateSpecials() {
     }
   });
 }
-
-const loopCancelers = [];
 
 const brickTypes = [
   'slowdown',

@@ -123,8 +123,23 @@ scene('jeu', () => {
         // pour les interactions à venir
         'brique',
       ],
+      x: () => [
+        sprite('tuile'),
+        // modifier sa couleur
+        color(255, 0, 0),
+        // ajouter une bordure
+        outline(4, 10),
+        // donner une hitbox
+        area(),
+        // rendre l'élément réactif aux collisions
+        solid(),
+        // lui donner un identifiant
+        // pour les interactions à venir
+        'brique',
+      ],
     }
   );
+  mutateSpecials();
   // le palet
   const palet = add([
     pos(vec2(width() / 2 - 40, height() - 40)),
@@ -279,26 +294,24 @@ en faisant la part belle à l'incertitude !
 
 */
 
-// Brick types
-// const slowdown = '';
-// const accelerate = '';
-// const bomb = '';
-// const doppelganger = '';
-// const fall = '';
-// const quake = '';
-// const pinball = '';
-// const radionucleide = '';
-
 function mutateSpecials() {
   // S B A D F Q P R
   every('brique', (b) => {
-    const coord = [b.pos.x, b.pos.y];
-    destroy(b);
-    const newBrick = [...chooseBrickType()];
-    add(newBrick.push()); // à définir
+    if (chance(0.25)) {
+      const type = choose(
+        'slowdown',
+        'accelerate',
+        'bomb',
+        'doppelganger',
+        'fall',
+        'quake',
+        'pinball',
+        'radionucleide'
+      );
+      b.use(type);
+      if (b.is('slowdown')) {
+      } else {
+      }
+    }
   });
-}
-
-function chooseBrickType() {
-  return chance(0.75) ? standard : choose();
 }

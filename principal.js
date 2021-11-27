@@ -34,15 +34,16 @@ loadSprite('tuile', 'images/tuile.png');
 loadSprite('coeur', 'images/coeur.png');
 
 // charger les sons
-loadSound('musique', 'audio/before_the_dawn.ogg');
-loadSound('reussite', 'audio/reussite.wav');
+loadSound('menuMusic', 'audio/before_the_dawn.ogg');
+loadSound('gameMusic', 'audio/Iwan Gabovitch - Dark Ambience Loop.ogg');
+loadSound('reussite', 'audio/THUD_Bright_01_mono.wav');
 loadSound('echec', 'audio/echec.wav');
 
 // déclaration d'une scène
 // les scènes découpent le jeu
 scene('accueil', () => {
   // lancer la musique
-  const musique = play('musique');
+  const musique = play('menuMusic');
   add([
     // créer un objet texte
     // le second paramètre permet de modifier son style
@@ -90,6 +91,10 @@ scene('jeu', () => {
   let vies = 3;
   let vitesse = 800;
 
+  const musique = play('gameMusic', {
+    seek: 5.0,
+  });
+
   // dessiner un niveau
   addLevel(
     [
@@ -130,7 +135,7 @@ scene('jeu', () => {
   mutateSpecials();
   
   //  Boucle temporelle qui change les aléatoirement les briques
-  loop(1, () => {
+  loop(10, () => {
     mutateSpecials();
   });
 
@@ -222,6 +227,7 @@ scene('jeu', () => {
         // appel de la scène d'échec
         // et passage d'un paramètre qui sera récupéré
         // dans cette scène
+        musique.stop();
         go('ohno', { score: score });
       }
     }

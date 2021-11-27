@@ -126,7 +126,7 @@ scene('jeu', () => {
       width: 65,
       height: 33,
       // définir où positionner le début de la grille
-      pos: vec2(100, 200),
+      pos: vec2(180, 200),
       // associer chaque symbole à un composant
       '=': () => [
         // joindre le sprite

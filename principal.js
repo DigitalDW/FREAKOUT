@@ -89,10 +89,11 @@ scene('jeu', () => {
   // score à zéro et vies à 3
   let score = 0;
   let vies = 3;
-  let vitesse = 800;
+  let vitesse = 600;
 
   const musique = play('gameMusic', {
-    seek: 5.0,
+    seek: 4.822,
+    loop: true,
   });
 
   // dessiner un niveau
@@ -135,7 +136,7 @@ scene('jeu', () => {
   mutateSpecials();
 
   //  Boucle temporelle qui change les aléatoirement les briques
-  loop(10, () => {
+  loop(9.599, () => {
     mutateSpecials();
   });
 
@@ -218,7 +219,7 @@ scene('jeu', () => {
       // réinitialiser la balle, sa vitesse, etc.
       ball.pos.x = width() / 2;
       ball.pos.y = height() - 55;
-      vitesse = 320;
+      //vitesse = 320;
       ball.velocite = dir(rand(220, 290));
       // diminuer les vies
       vies--;
@@ -236,7 +237,7 @@ scene('jeu', () => {
   // gérer les collisions
   // avec le paddle
   ball.onCollide('paddle', (p) => {
-    vitesse += 60;
+    vitesse += 0;
     // renvoyer la balle avec le bon angle
     ball.velocite = dir(ball.pos.angle(p.pos));
   });

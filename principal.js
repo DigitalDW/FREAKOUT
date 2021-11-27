@@ -450,9 +450,24 @@ function mutateSpecials() {
     } else if (b.is('standard')) {
       b.unuse('standard');
     }
-    if (chance(1)) {
+    if (chance(0.25)) {
       const type = choose([
+        'slowdown',
+        'slowdown',
+        'slowdown',
+        'accelerate',
+        'accelerate',
+        'accelerate',
         'bomb',
+        'bomb',
+        'bomb',
+        'doppelganger',
+        'doppelganger',
+        'doppelganger',
+        'fall',
+        'quake',
+        'pinball',
+        'radionucleide',
       ]);
 
       b.use(type);

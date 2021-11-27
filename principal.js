@@ -41,6 +41,8 @@ loadSound('gameMusic', 'audio/Iwan Gabovitch - Dark Ambience Loop.ogg');
 loadSound('reussite', 'audio/THUD_Bright_01_mono.wav');
 loadSound('echec', 'audio/echec.wav');
 loadSound('quake', 'audio/EXPLOSION_Distorted_03_Long_stereo.wav');
+loadSound('riser', 'audio/PM_FSSF2_TONAL_ENERGY_RISERS_4.wav');
+loadSound('thunder', 'audio/THUD_Bright_01_mono.wav');
 
 // déclaration d'une scène
 // les scènes découpent le jeu

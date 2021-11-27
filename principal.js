@@ -336,6 +336,7 @@ scene('jeu', () => {
     play('quake');
 
     shake(300);
+    b.destroy();
     every('brique', (b) => {
       b.pos.x = b.pos.x + rand(-50, 50);
       b.pos.y = b.pos.y + rand(-50, 50);
@@ -344,6 +345,56 @@ scene('jeu', () => {
 
     // augmenter le score
     score++;
+  });
+
+  ball.onCollide('doppelganger', (b) => {
+    // play('quake');
+    b.destroy();
+    ball.velocite = dir(ball.pos.angle(b.pos));
+
+    let posX = 0;
+    if (ball.pos.x - 50 < 0) {
+      posX = ball.pos.x + 50;
+    } else if (ball.pos.x + 50 > width()) {
+      posX = ball.pos.x - 50;
+    }
+    let ball2 = add([
+      pos(posX, 50),
+      // créer un cercle de rayon 16
+      circle(16),
+      outline(4),
+      area({
+        width: 32,
+        height: 32,
+        offset: vec2(-16),
+      }),
+      {
+        // dir extrait le vecteur de direction
+        // à partir d'un angle donné
+        velocite: dir(rand(-80, 80)),
+        // notez que nous définissons velocite ici
+        // il n'appartient pas au langage
+      },
+    ]);
+    ball2.onUpdate(() => {
+      // déplacer la balle
+      ball2.move(ball2.velocite.scale(vitesse));
+      // gérer les rebonds sur les murs latéraux...
+      if (ball2.pos.x < 0 || ball2.pos.x > width()) {
+        // et renvoyer la balle
+        ball2.velocite.x = -ball2.velocite.x;
+      }
+      // si la balle tape au sommet...
+      if (ball2.pos.y < 0) {
+        // elle repart dans l'autre sens
+        ball2.velocite.y = -ball2.velocite.y;
+      }
+    });
+    ball2.onCollide('brique', (b) => {
+      // augmenter le score
+      score++;
+      ball2.velocite = dir(ball2.pos.angle(b.pos));
+    });
   });
 });
 

@@ -108,18 +108,20 @@ scene('jeu', () => {
       // définir où positionner le début de la grille
       pos: vec2(100, 200),
       // associer chaque symbole à un composant
-      '=': standard,
-      x: () => [
+      '=': () => [
+        // joindre le sprite
         sprite('tuile'),
-        color(255, 0, 255),
+        // modifier sa couleur
+        color(255, 0, 0),
+        // ajouter une bordure
         outline(4, 10),
+        // donner une hitbox
         area(),
+        // rendre l'élément réactif aux collisions
         solid(),
-        // ici on utilise deux identifiants
-        // pour associer deux comportements
-        // distincts
+        // lui donner un identifiant
+        // pour les interactions à venir
         'brique',
-        'special',
       ],
     }
   );
@@ -226,12 +228,13 @@ scene('jeu', () => {
   // avec tous les types de briques
   // grâce à l'identifiant "brique"
   ball.onCollide('brique', (b) => {
-    mutateSpecials();
     play('reussite');
-    b.destroy();
+    //b.destroy();
     // augmenter le score
     score++;
     ball.velocite = dir(ball.pos.angle(b.pos));
+    b.use(color(255,255,255))
+    b.use('foo');
   });
   // avec les briques spéciales
   // grâce à l'identifiant "special"
@@ -277,31 +280,14 @@ en faisant la part belle à l'incertitude !
 */
 
 // Brick types
-
-const standard = () => [
-  // joindre le sprite
-  sprite('tuile'),
-  // modifier sa couleur
-  color(255, 0, 0),
-  // ajouter une bordure
-  outline(4, 10),
-  // donner une hitbox
-  area(),
-  // rendre l'élément réactif aux collisions
-  solid(),
-  // lui donner un identifiant
-  // pour les interactions à venir
-  'brique',
-];
-
-const slowdown = standard;
-const accelerate = standard;
-const bomb = standard;
-const doppelganger = standard;
-const fall = standard;
-const quake = standard;
-const pinball = standard;
-const radionucleide = standard;
+// const slowdown = '';
+// const accelerate = '';
+// const bomb = '';
+// const doppelganger = '';
+// const fall = '';
+// const quake = '';
+// const pinball = '';
+// const radionucleide = '';
 
 function mutateSpecials() {
   // S B A D F Q P R

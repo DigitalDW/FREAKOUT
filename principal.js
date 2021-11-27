@@ -108,7 +108,21 @@ scene('jeu', () => {
       // définir où positionner le début de la grille
       pos: vec2(100, 200),
       // associer chaque symbole à un composant
-      '=': standard,
+      '=': () => [
+        // joindre le sprite
+        sprite('tuile'),
+        // modifier sa couleur
+        color(255, 0, 0),
+        // ajouter une bordure
+        outline(4, 10),
+        // donner une hitbox
+        area(),
+        // rendre l'élément réactif aux collisions
+        solid(),
+        // lui donner un identifiant
+        // pour les interactions à venir
+        'brique',
+      ],
       x: () => [
         sprite('tuile'),
         color(255, 0, 255),

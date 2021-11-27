@@ -112,7 +112,7 @@ scene('jeu', () => {
         // joindre le sprite
         sprite('tuile'),
         // modifier sa couleur
-        color(255, 0, 0),
+        color(255, 255, 255),
         // ajouter une bordure
         outline(4, 10),
         // donner une hitbox
@@ -123,21 +123,8 @@ scene('jeu', () => {
         // pour les interactions à venir
         'brique',
       ],
-      x: () => [
-        sprite('tuile'),
-        color(255, 0, 255),
-        outline(4, 10),
-        area(),
-        solid(),
-        // ici on utilise deux identifiants
-        // pour associer deux comportements
-        // distincts
-        'brique',
-        'special',
-      ],
     }
   );
-  mutateSpecials();
   // le palet
   const palet = add([
     pos(vec2(width() / 2 - 40, height() - 40)),
@@ -260,6 +247,7 @@ scene('jeu', () => {
     palet.height = randi(20, 100);
     ball.velocite = dir(ball.pos.angle(b.pos));
   });
+  mutateSpecials();
 });
 
 // déclaration de la scène d'échec
@@ -292,21 +280,42 @@ en faisant la part belle à l'incertitude !
 
 function mutateSpecials() {
   // S B A D F Q P R
+
   every('brique', (b) => {
     if (chance(0.25)) {
-      const type = choose(
+      const type = choose([
+        'slowdown',
+        'slowdown',
         'slowdown',
         'accelerate',
+        'accelerate',
+        'accelerate',
         'bomb',
+        'doppelganger',
+        'doppelganger',
         'doppelganger',
         'fall',
         'quake',
         'pinball',
-        'radionucleide'
-      );
+        'radionucleide',
+      ]);
       b.use(type);
       if (b.is('slowdown')) {
-      } else {
+        b.use(color(36, 20, 159));
+      } else if (b.is('accelerate')) {
+        b.use(color(205, 14, 14));
+      } else if (b.is('bomb')) {
+        b.use(color(193, 137, 16));
+      } else if (b.is('doppelganger')) {
+        b.use(color(0, 255, 255));
+      } else if (b.is('fall')) {
+        b.use(color(50, 50, 50));
+      } else if (b.is('quake')) {
+        b.use(color(153, 102, 51));
+      } else if (b.is('pinball')) {
+        b.use(color(158, 158, 158));
+      } else if (b.is('radionucleide')) {
+        b.use(color(77, 255, 77));
       }
     }
   });

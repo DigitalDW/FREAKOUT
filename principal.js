@@ -242,8 +242,6 @@ scene('jeu', () => {
     // augmenter le score
     score++;
     ball.velocite = dir(ball.pos.angle(b.pos));
-    // b.use(color(255, 255, 255));
-    // b.use('foo');
   });
   // avec les briques spéciales
   // grâce à l'identifiant "special"
@@ -256,7 +254,16 @@ scene('jeu', () => {
     });
     ball.velocite = dir(ball.pos.angle(b.pos));
   });
-  mutateSpecials();
+
+  ball.onCollide('quake', (b) => {
+    shake(300);
+    every('brique', (b) => {
+      b.pos.x = b.pos.x + rand(-50, 50);
+      b.pos.y = b.pos.y + rand(-50, 50);
+    });
+    every('brique', (b) => console.log(b.pos));
+    ball.velocite = dir(ball.pos.angle(b.pos));
+  });
 });
 
 // déclaration de la scène d'échec
@@ -313,20 +320,20 @@ function mutateSpecials() {
     }
     if (chance(0.25)) {
       const type = choose([
-        'slowdown',
-        'slowdown',
-        'slowdown',
-        'accelerate',
-        'accelerate',
-        'accelerate',
-        'bomb',
-        'doppelganger',
-        'doppelganger',
-        'doppelganger',
-        'fall',
+        // 'slowdown',
+        // 'slowdown',
+        // 'slowdown',
+        // 'accelerate',
+        // 'accelerate',
+        // 'accelerate',
+        // 'bomb',
+        // 'doppelganger',
+        // 'doppelganger',
+        // 'doppelganger',
+        //'fall',
         'quake',
-        'pinball',
-        'radionucleide',
+        // 'pinball',
+        // 'radionucleide',
       ]);
 
       b.use(type);
